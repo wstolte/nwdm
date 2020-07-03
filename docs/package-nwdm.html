@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares</title>
-  <meta name="description" content="3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares" />
+  <title>4 Package nwdm | Documentation North Sea Wadden Sea validation database at Deltares</title>
+  <meta name="description" content="4 Package nwdm | Documentation North Sea Wadden Sea validation database at Deltares" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares" />
+  <meta property="og:title" content="4 Package nwdm | Documentation North Sea Wadden Sea validation database at Deltares" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares" />
+  <meta name="twitter:title" content="4 Package nwdm | Documentation North Sea Wadden Sea validation database at Deltares" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="workflow-description.html"/>
-<link rel="next" href="package-nwdm.html"/>
+<link rel="prev" href="building-a-query.html"/>
+<link rel="next" href="more-on-wfs.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -166,127 +166,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="building-a-query" class="section level1">
-<h1><span class="header-section-number">3</span> Building a query</h1>
-<div id="structure-of-a-wfs-request" class="section level2">
-<h2><span class="header-section-number">3.1</span> Structure of a wfs request</h2>
-<p>The wfs request for the location table looks like this:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">structure &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">parse_url</span>(<span class="st">&quot;https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM:location&amp;outputFormat=csv&quot;</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">paste0</span>(<span class="kw">paste</span>(<span class="kw">names</span>(structure),<span class="kw">paste0</span>(structure),<span class="dt">sep=</span><span class="st">&quot;=&quot;</span>)))</a></code></pre></div>
-<table>
-<colgroup>
-<col width="100%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">scheme=https</td>
-</tr>
-<tr class="even">
-<td align="left">hostname=marineprojects.openearth.nl</td>
-</tr>
-<tr class="odd">
-<td align="left">port=NULL</td>
-</tr>
-<tr class="even">
-<td align="left">path=geoserver/NWDM/ows</td>
-</tr>
-<tr class="odd">
-<td align="left">query=list(service = “WFS”, version = “1.0.0”, request = “GetFeature”, typeName = “NWDM:location”, outputFormat = “csv”)</td>
-</tr>
-<tr class="even">
-<td align="left">params=NULL</td>
-</tr>
-<tr class="odd">
-<td align="left">fragment=NULL</td>
-</tr>
-<tr class="even">
-<td align="left">username=NULL</td>
-</tr>
-<tr class="odd">
-<td align="left">password=NULL</td>
-</tr>
-</tbody>
-</table>
-<p>The interesting part of the wfs request is the query. In the above example, the query contains information on the service and version (WFS 1.0.0), request (GetFeature), and the table or “typeName” (refers to database schema “NWDM”, and table “location”)</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">paste0</span>(<span class="kw">paste</span>(<span class="kw">names</span>(structure<span class="op">$</span>query),<span class="kw">paste0</span>(structure<span class="op">$</span>query),<span class="dt">sep=</span><span class="st">&quot;=&quot;</span>)))</a></code></pre></div>
-<table>
-<thead>
-<tr class="header">
-<th align="left">x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">service=WFS</td>
-</tr>
-<tr class="even">
-<td align="left">version=1.0.0</td>
-</tr>
-<tr class="odd">
-<td align="left">request=GetFeature</td>
-</tr>
-<tr class="even">
-<td align="left">typeName=NWDM:location</td>
-</tr>
-<tr class="odd">
-<td align="left">outputFormat=csv</td>
-</tr>
-</tbody>
-</table>
-<p>In the query part, we can add an element called <a href="https://docs.geoserver.org/stable/en/user/tutorials/cql/cql_tutorial.html">CQL-query</a>.</p>
-</div>
-<div id="select-parameters-and-locations" class="section level2">
-<h2><span class="header-section-number">3.2</span> Select parameters and locations</h2>
-<p>Below is an example where only data are requested that contain data on “water body nitrate” at locations “DOOVBWT” (this is a station in the Wadden Sea)</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">url =<span class="st"> &quot;https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM%3Ameasurement_view&amp;cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&amp;outputFormat=csv&quot;</span></a>
-<a class="sourceLine" id="cb5-2" title="2">structure &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">parse_url</span>(url)</a>
-<a class="sourceLine" id="cb5-3" title="3"></a>
-<a class="sourceLine" id="cb5-4" title="4">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">paste0</span>(<span class="kw">paste</span>(<span class="kw">names</span>(structure),<span class="kw">paste0</span>(structure),<span class="dt">sep=</span><span class="st">&quot;=&quot;</span>)))</a></code></pre></div>
-<table>
-<colgroup>
-<col width="100%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">scheme=https</td>
-</tr>
-<tr class="even">
-<td align="left">hostname=marineprojects.openearth.nl</td>
-</tr>
-<tr class="odd">
-<td align="left">port=NULL</td>
-</tr>
-<tr class="even">
-<td align="left">path=geoserver/NWDM/ows</td>
-</tr>
-<tr class="odd">
-<td align="left">query=list(service = “WFS”, version = “1.0.0”, request = “GetFeature”, typeName = “NWDM:measurement_view”, cql_filter = “(p35preflabel=‘Water body nitrate’ and location_code=‘DOOVBWT’)”, outputFormat = “csv”)</td>
-</tr>
-<tr class="even">
-<td align="left">params=NULL</td>
-</tr>
-<tr class="odd">
-<td align="left">fragment=NULL</td>
-</tr>
-<tr class="even">
-<td align="left">username=NULL</td>
-</tr>
-<tr class="odd">
-<td align="left">password=NULL</td>
-</tr>
-</tbody>
-</table>
+<div id="package-nwdm" class="section level1">
+<h1><span class="header-section-number">4</span> Package nwdm</h1>
+<p>To query the database, an r package is available. Install the package with devtools::install_github(“wstolte/nwdm”).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">require</span>(lubridate)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(nwdm)) {</a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="kw">print</span>(<span class="st">&quot;Package nwdm will be installed&quot;</span>) </a>
+<a class="sourceLine" id="cb6-4" title="4">  devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;wstolte/nwdm&quot;</span>)</a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="kw">require</span>(nwdm)</a>
+<a class="sourceLine" id="cb6-6" title="6">  } <span class="cf">else</span> <span class="kw">require</span>(nwdm)</a>
+<a class="sourceLine" id="cb6-7" title="7"></a>
+<a class="sourceLine" id="cb6-8" title="8">cql_list =<span class="st"> </span><span class="kw">list</span>(<span class="dt">p35preflabel =</span> <span class="st">&quot;Water body nitrate&quot;</span>,</a>
+<a class="sourceLine" id="cb6-9" title="9">                <span class="dt">location_code =</span> <span class="st">&quot;DOOVBWT&quot;</span></a>
+<a class="sourceLine" id="cb6-10" title="10">)</a>
+<a class="sourceLine" id="cb6-11" title="11"></a>
+<a class="sourceLine" id="cb6-12" title="12">columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;location_code&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;depth&quot;</span>, <span class="st">&quot;vertical_reference_code&quot;</span>, <span class="st">&quot;parameter_label&quot;</span>, <span class="st">&quot;value&quot;</span>, <span class="st">&quot;unit_preflabel&quot;</span>, <span class="st">&quot;quality_code&quot;</span>)</a>
+<a class="sourceLine" id="cb6-13" title="13"></a>
+<a class="sourceLine" id="cb6-14" title="14">url =<span class="st"> </span><span class="kw">create_url</span>(<span class="dt">cql_list =</span> cql_list)</a>
+<a class="sourceLine" id="cb6-15" title="15"></a>
+<a class="sourceLine" id="cb6-16" title="16">myData &lt;-<span class="st"> </span><span class="kw">read_csv</span>(url)</a>
+<a class="sourceLine" id="cb6-17" title="17">myData <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">month =</span> <span class="kw">month</span>(date), <span class="dt">year =</span> <span class="kw">year</span>(date)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="kw">ggplot</span>(<span class="kw">aes</span>(month, value)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="dt">color =</span> year), <span class="dt">width =</span> <span class="fl">0.2</span>)</a></code></pre></div>
+<div class="figure"><span id="fig:example1"></span>
+<img src="documentation_files/figure-html/example1-1.png" alt="Example of seasonal variation of nitrate concentration at location DOOVBWT. " width="100%" />
+<p class="caption">
+Figure 4.1: Example of seasonal variation of nitrate concentration at location DOOVBWT.
+</p>
 </div>
 </div>
             </section>
@@ -294,8 +201,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="workflow-description.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="package-nwdm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="building-a-query.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="more-on-wfs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
