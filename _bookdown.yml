@@ -3,7 +3,7 @@ output_dir: docs
 new_session: yes
 output:
   bookdown::gitbook:
-    css: style.css
+    css: DeltaresStyle.css
     config:
       toc:
         collapse: section

@@ -174,6 +174,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-out" class="section level2">
 <h2><span class="header-section-number">2.2</span> Data out</h2>
 <p>The Geoserver provides a Web Feature Service (WFS). The service is called by a URL. In the URL, specifications and criteria can be included.</p>
+<p>Geoserver can deliver different formats, e.g. csv text. This is shown in the next examples. Calling the URL starts the download of this csv file. The file can be downloaded to your local machine, or read directly into an object in your favourite scripting language</p>
 <p>Currently, three tables are available in the Geoserver:</p>
 <ol style="list-style-type: decimal">
 <li>Locations</li>
@@ -184,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="locations" class="section level2">
 <h2><span class="header-section-number">2.3</span> Locations</h2>
 <p>All unique locations in the database. The table can be downloaded using the url: <a href="https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM:location&amp;outputFormat=csv" class="uri">https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM:location&amp;outputFormat=csv</a></p>
-<p>Below is a map with all locations currently in the database.</p>
+<p>Below is a map with all locations currently in the database. Data is read into an r dataframe using read_csv from the readr (tidyverse) package, converted to a spatial object, transformed to a suitable coordinate reference system for interactive plotting, and plotted using the leaflet library.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">locs &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM:location&amp;outputFormat=csv&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>sf<span class="op">::</span><span class="kw">st_as_sf</span>(<span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>), <span class="dt">crs =</span> <span class="dv">25831</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="st">  </span>sf<span class="op">::</span><span class="kw">st_transform</span>(<span class="dv">4326</span>)</a>
 <a class="sourceLine" id="cb1-3" title="3"></a>

@@ -31,6 +31,8 @@ Data from different sources are retrieved, harmonized and stored locally in a Po
 
 The Geoserver provides a Web Feature Service (WFS). The service is called by a URL. In the URL, specifications and criteria can be included.
 
+Geoserver can deliver different formats, e.g. csv text. This is shown in the next examples. Calling the URL starts the download of this csv file. The file can be downloaded to your local machine, or read directly into an object in your favourite scripting language
+
 Currently, three tables are available in the Geoserver:
 
 1. Locations
@@ -38,11 +40,13 @@ Currently, three tables are available in the Geoserver:
 3. Observations - all observations (1.4 million). It is unwise to download all data in the observations table at once. The first 50 records can be downloaded with https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:measurement_view&outputFormat=csv&maxFeatures=50
 
 
+
 ## Locations
 
 All unique locations in the database. The table can be downloaded using the url: https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv
 
-Below is a map with all locations currently in the database.
+Below is a map with all locations currently in the database. Data is read into an r dataframe using read_csv from the readr (tidyverse) package, converted to a spatial object, transformed to a suitable coordinate reference system for interactive plotting, and plotted using the leaflet library. 
+
 
 ```{r}
 locs <- readr::read_csv("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% sf::st_as_sf(coords = c("x","y"), crs = 25831) %>%
