@@ -1,0 +1,117 @@
+---
+title: "North Sea and Wadden Sea model validation database at Deltares"
+
+---
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE,
+	fig.width = 6,
+	out.width = "100%"
+)
+require(tidyverse)
+require(sf)
+require(leaflet)
+```
+
+# Background
+
+Several projects have a need for model validation data for the (Greater) North Sea. Current modeling efforts comprise hydrodynamics, sediment, water quality and ecological modeling. Validation data therefore comprise a large number of data from different origin, and different standards. The objective of this memo is to propose and agree on a common data format for validation data for North Sea models: both hydrodynamics, water quality and ecology.
+
+# Solution
+
+Data from different sources are retrieved, harmonized and stored locally in a PostGreSQL/PostGIS database. This is done by scripting, so that it is easy to update. Data are then made available via a Geoserver for easy retrieval by users. For use in validation scripts, the data can be queried and downloaded in a ready-to-use form via scripting in Matlab, Python or R. This document describes this process. 
+
+# Principles of WFS
+
+The Geoserver provides a Web Feature Service (WFS). The service is called by a URL. In the URL, specifications and criteria can be included.
+
+# Available tables
+
+Currently, three tables are available:
+
+1. Locations
+2. Locations and parameters 
+3. Observations - all observations (1.4 million). It is unwise to download all data in the observations table at once. The first 50 records can be downloaded with https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:measurement_view&outputFormat=csv&maxFeatures=50
+
+
+# Locations
+
+All unique locations in the database. The table can be downloaded using the url: https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv
+
+Below is a map with all locations currently in the database.
+
+```{r}
+locs <- readr::read_csv("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% sf::st_as_sf(coords = c("x","y"), crs = 25831) %>%
+  sf::st_transform(4326)
+
+leaflet::leaflet(locs) %>%
+  addTiles() %>%
+  addCircleMarkers(label = ~location_code)
+```
+
+
+# Minimal metadata: Combination of locations and parameters
+
+All unique combinations of location and parameters. The table can be downloaded completeley using the url:  https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv
+
+The following parameters are currently loaded in the database:
+
+```{r}
+parameters <- readr::read_csv("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv") %>% distinct(p35code, p35preflabel)
+knitr::kable(parameters)
+```
+
+
+# Observations
+
+All observations. This table should not be downloaded completely. It is big and will grow bigger over time, and it is unlikely that you will need the complete table. The table can be easily subsetted by a so-called CQL-query in the wfs request (url). This is described in the next part.
+
+
+# Building a query
+
+## Structure of a wfs request
+
+The wfs request for the location table looks like this:
+
+```{r}
+structure <- httr::parse_url("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv")
+
+knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
+```
+
+The interesting part of the wfs request is the query. In the above example, the query contains information on the service and version (WFS 1.0.0), request (GetFeature), and the table or "typeName" (refers to database schema "NWDM", and table "location")
+
+```{r requestTable, fig.cap="structure of the query part of the WFS request."}
+knitr::kable(paste0(paste(names(structure$query),paste0(structure$query),sep="=")))
+```
+
+In the query part, we can add an element called [CQL-query](https://docs.geoserver.org/stable/en/user/tutorials/cql/cql_tutorial.html). 
+
+## Select parameters and locations 
+
+Below is an example where only data are requested that contain data on "water body nitrate" at locations "DOOVBWT" (this is a station in the Wadden Sea)
+
+
+```{r}
+url = "https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM%3Ameasurement_view&cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&outputFormat=csv"
+structure <- httr::parse_url(url)
+
+knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
+```
+
+# More on WFS
+
+Full documentation is found here: https://docs.geoserver.org/latest/en/user/services/wfs/reference.html
+
+The capabilities of the used geoserver schema can be requested by:
+https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetCapabilities
+
+A description of the featuretypes (layers) can be requested by:
+https://marineprojects.openearth.nl/geoserver/NWDM/wfs?request=DescribeFeatureType
+
+
