@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>8 Building a query | Intro</title>
-  <meta name="description" content="8 Building a query | Intro" />
+  <title>3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares</title>
+  <meta name="description" content="3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="8 Building a query | Intro" />
+  <meta property="og:title" content="3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="8 Building a query | Intro" />
+  <meta name="twitter:title" content="3 Building a query | Documentation North Sea Wadden Sea validation database at Deltares" />
   
   
   
@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="observations.html"/>
+<link rel="prev" href="workflow-description.html"/>
 <link rel="next" href="more-on-wfs.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -135,18 +135,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
-<li class="chapter" data-level="2" data-path="solution.html"><a href="solution.html"><i class="fa fa-check"></i><b>2</b> Solution</a></li>
-<li class="chapter" data-level="3" data-path="principles-of-wfs.html"><a href="principles-of-wfs.html"><i class="fa fa-check"></i><b>3</b> Principles of WFS</a></li>
-<li class="chapter" data-level="4" data-path="available-tables.html"><a href="available-tables.html"><i class="fa fa-check"></i><b>4</b> Available tables</a></li>
-<li class="chapter" data-level="5" data-path="locations.html"><a href="locations.html"><i class="fa fa-check"></i><b>5</b> Locations</a></li>
-<li class="chapter" data-level="6" data-path="minimal-metadata-combination-of-locations-and-parameters.html"><a href="minimal-metadata-combination-of-locations-and-parameters.html"><i class="fa fa-check"></i><b>6</b> Minimal metadata: Combination of locations and parameters</a></li>
-<li class="chapter" data-level="7" data-path="observations.html"><a href="observations.html"><i class="fa fa-check"></i><b>7</b> Observations</a></li>
-<li class="chapter" data-level="8" data-path="building-a-query.html"><a href="building-a-query.html"><i class="fa fa-check"></i><b>8</b> Building a query</a><ul>
-<li class="chapter" data-level="8.1" data-path="building-a-query.html"><a href="building-a-query.html#structure-of-a-wfs-request"><i class="fa fa-check"></i><b>8.1</b> Structure of a wfs request</a></li>
-<li class="chapter" data-level="8.2" data-path="building-a-query.html"><a href="building-a-query.html#select-parameters-and-locations"><i class="fa fa-check"></i><b>8.2</b> Select parameters and locations</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
+<li class="chapter" data-level="2" data-path="workflow-description.html"><a href="workflow-description.html"><i class="fa fa-check"></i><b>2</b> Workflow description</a><ul>
+<li class="chapter" data-level="2.1" data-path="workflow-description.html"><a href="workflow-description.html#data-in"><i class="fa fa-check"></i><b>2.1</b> Data in</a></li>
+<li class="chapter" data-level="2.2" data-path="workflow-description.html"><a href="workflow-description.html#data-out"><i class="fa fa-check"></i><b>2.2</b> Data out</a></li>
+<li class="chapter" data-level="2.3" data-path="workflow-description.html"><a href="workflow-description.html#locations"><i class="fa fa-check"></i><b>2.3</b> Locations</a></li>
+<li class="chapter" data-level="2.4" data-path="workflow-description.html"><a href="workflow-description.html#minimal-metadata-combination-of-locations-and-parameters"><i class="fa fa-check"></i><b>2.4</b> Minimal metadata: Combination of locations and parameters</a></li>
+<li class="chapter" data-level="2.5" data-path="workflow-description.html"><a href="workflow-description.html#observations"><i class="fa fa-check"></i><b>2.5</b> Observations</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="more-on-wfs.html"><a href="more-on-wfs.html"><i class="fa fa-check"></i><b>9</b> More on WFS</a></li>
+<li class="chapter" data-level="3" data-path="building-a-query.html"><a href="building-a-query.html"><i class="fa fa-check"></i><b>3</b> Building a query</a><ul>
+<li class="chapter" data-level="3.1" data-path="building-a-query.html"><a href="building-a-query.html#structure-of-a-wfs-request"><i class="fa fa-check"></i><b>3.1</b> Structure of a wfs request</a></li>
+<li class="chapter" data-level="3.2" data-path="building-a-query.html"><a href="building-a-query.html#select-parameters-and-locations"><i class="fa fa-check"></i><b>3.2</b> Select parameters and locations</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="more-on-wfs.html"><a href="more-on-wfs.html"><i class="fa fa-check"></i><b>4</b> More on WFS</a></li>
 </ul>
 
       </nav>
@@ -156,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Intro</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Documentation North Sea Wadden Sea validation database at Deltares</a>
           </h1>
         </div>
 
@@ -165,9 +166,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="building-a-query" class="section level1">
-<h1><span class="header-section-number">8</span> Building a query</h1>
+<h1><span class="header-section-number">3</span> Building a query</h1>
 <div id="structure-of-a-wfs-request" class="section level2">
-<h2><span class="header-section-number">8.1</span> Structure of a wfs request</h2>
+<h2><span class="header-section-number">3.1</span> Structure of a wfs request</h2>
 <p>The wfs request for the location table looks like this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">structure &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">parse_url</span>(<span class="st">&quot;https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM:location&amp;outputFormat=csv&quot;</span>)</a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
@@ -240,7 +241,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In the query part, we can add an element called <a href="https://docs.geoserver.org/stable/en/user/tutorials/cql/cql_tutorial.html">CQL-query</a>.</p>
 </div>
 <div id="select-parameters-and-locations" class="section level2">
-<h2><span class="header-section-number">8.2</span> Select parameters and locations</h2>
+<h2><span class="header-section-number">3.2</span> Select parameters and locations</h2>
 <p>Below is an example where only data are requested that contain data on “water body nitrate” at locations “DOOVBWT” (this is a station in the Wadden Sea)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">url =<span class="st"> &quot;https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM%3Ameasurement_view&amp;cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&amp;outputFormat=csv&quot;</span></a>
 <a class="sourceLine" id="cb5-2" title="2">structure &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">parse_url</span>(url)</a>
@@ -292,7 +293,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="observations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="workflow-description.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="more-on-wfs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
