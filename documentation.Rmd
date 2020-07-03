@@ -18,28 +18,27 @@ require(sf)
 require(leaflet)
 ```
 
-# Background
 
-Several projects have a need for model validation data for the (Greater) North Sea. Current modeling efforts comprise hydrodynamics, sediment, water quality and ecological modeling. Validation data therefore comprise a large number of data from different origin, and different standards. The objective of this memo is to propose and agree on a common data format for validation data for North Sea models: both hydrodynamics, water quality and ecology.
 
-# Solution
+# Workflow description
+
+## Data in
 
 Data from different sources are retrieved, harmonized and stored locally in a PostGreSQL/PostGIS database. This is done by scripting, so that it is easy to update. Data are then made available via a Geoserver for easy retrieval by users. For use in validation scripts, the data can be queried and downloaded in a ready-to-use form via scripting in Matlab, Python or R. This document describes this process. 
 
-# Principles of WFS
+## Data out
+
 
 The Geoserver provides a Web Feature Service (WFS). The service is called by a URL. In the URL, specifications and criteria can be included.
 
-# Available tables
-
-Currently, three tables are available:
+Currently, three tables are available in the Geoserver:
 
 1. Locations
 2. Locations and parameters 
 3. Observations - all observations (1.4 million). It is unwise to download all data in the observations table at once. The first 50 records can be downloaded with https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:measurement_view&outputFormat=csv&maxFeatures=50
 
 
-# Locations
+## Locations
 
 All unique locations in the database. The table can be downloaded using the url: https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv
 
@@ -55,7 +54,7 @@ leaflet::leaflet(locs) %>%
 ```
 
 
-# Minimal metadata: Combination of locations and parameters
+## Minimal metadata: Combination of locations and parameters
 
 All unique combinations of location and parameters. The table can be downloaded completeley using the url:  https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv
 
@@ -67,7 +66,7 @@ knitr::kable(parameters)
 ```
 
 
-# Observations
+## Observations
 
 All observations. This table should not be downloaded completely. It is big and will grow bigger over time, and it is unlikely that you will need the complete table. The table can be easily subsetted by a so-called CQL-query in the wfs request (url). This is described in the next part.
 
