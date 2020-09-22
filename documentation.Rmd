@@ -37,19 +37,20 @@ Currently, three tables are available in the Geoserver:
 
 1. Locations
 2. Locations and parameters 
-3. Observations - all observations (1.4 million). It is unwise to download all data in the observations table at once. The first 50 records can be downloaded with https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:measurement_view&outputFormat=csv&maxFeatures=50
+3. Observations - all observations (1.4 million). It is unwise to download all data in the observations table at once. The first 50 records can be downloaded with
+http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:measurement_view&outputFormat=csv&maxFeatures=50
 
 
 
 ## Locations
 
-All unique locations in the database. The table can be downloaded using the url: https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv
+All unique locations in the database. The table can be downloaded using the url: http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv
 
 Below is a map with all locations currently in the database. Data is read into an r dataframe using read_csv from the readr (tidyverse) package, converted to a spatial object, transformed to a suitable coordinate reference system for interactive plotting, and plotted using the leaflet library. 
 
 
 ```{r}
-locs <- readr::read_csv("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% sf::st_as_sf(coords = c("x","y"), crs = 25831) %>%
+locs <- readr::read_csv("http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% sf::st_as_sf(coords = c("x","y"), crs = 25831) %>%
   sf::st_transform(4326)
 
 leaflet::leaflet(locs) %>%
@@ -60,12 +61,12 @@ leaflet::leaflet(locs) %>%
 
 ## Minimal metadata: Combination of locations and parameters
 
-All unique combinations of location and parameters. The table can be downloaded completeley using the url:  https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv
+All unique combinations of location and parameters. The table can be downloaded completeley using the url:  http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv
 
 The following parameters are currently loaded in the database:
 
 ```{r}
-parameters <- readr::read_csv("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv") %>% distinct(p35code, p35preflabel)
+parameters <- readr::read_csv("http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv") %>% distinct(p35code, p35preflabel)
 knitr::kable(parameters)
 ```
 
@@ -82,7 +83,7 @@ All observations. This table should not be downloaded completely. It is big and 
 The wfs request for the location table looks like this:
 
 ```{r}
-structure <- httr::parse_url("https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv")
+structure <- httr::parse_url("http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv")
 
 knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
 ```
@@ -101,7 +102,7 @@ Below is an example where only data are requested that contain data on "water bo
 
 
 ```{r}
-url = "https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM%3Ameasurement_view&cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&outputFormat=csv"
+url = "http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM%3Ameasurement_view&cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&outputFormat=csv"
 structure <- httr::parse_url(url)
 
 knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
@@ -144,9 +145,9 @@ ggplot(aes(month, value)) +
 Full documentation is found here: https://docs.geoserver.org/latest/en/user/services/wfs/reference.html
 
 The capabilities of the used geoserver schema can be requested by:
-https://marineprojects.openearth.nl/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetCapabilities
+http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetCapabilities
 
 A description of the featuretypes (layers) can be requested by:
-https://marineprojects.openearth.nl/geoserver/NWDM/wfs?request=DescribeFeatureType
+http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/wfs?request=DescribeFeatureType
 
 
