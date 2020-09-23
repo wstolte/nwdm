@@ -6,7 +6,7 @@ output:
     css: DeltaresStyle.css
     config:
       toc:
-        collapse: section
+        collapse: chapter
         scroll_highlight: yes
         before: null
         after: null

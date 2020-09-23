@@ -50,8 +50,9 @@ Below is a map with all locations currently in the database. Data is read into a
 
 
 ```{r}
-locs <- readr::read_csv("http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% sf::st_as_sf(coords = c("x","y"), crs = 25831) %>%
-  sf::st_transform(4326)
+locs <- readr::read_csv("http://al-276.xtr.deltares.nl:8080/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% 
+  sf::st_as_sf(coords = c("x","y"), crs = 4326)                         #, crs = 25831) %>%  # oude versie
+  # sf::st_transform(4326)
 
 leaflet::leaflet(locs) %>%
   addTiles() %>%
