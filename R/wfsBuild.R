@@ -25,8 +25,8 @@ create_url <- function(cql_list, outputFormat = "csv", maxFeatures = NULL, colum
   if(is.null(cql_list)) cql_filter = NULL else cql_filter = paste0("(",paste(names(cql_list),paste0("'", cql_list, "'"),sep="=",collapse=" and " ),")")
 
   request <- structure(
-    list(scheme = "https",
-         hostname = "http://al-276.xtr.deltares.nl:8080",
+    list(scheme = "http",
+         hostname = "al-276.xtr.deltares.nl:8080",
          port = NULL,
          path = "geoserver/NWDM/ows",
          query = list(
