@@ -16,7 +16,7 @@
 #' url = create_url(cql_list = cql_list)
 #' read_csv(url)
 #'
-create_url <- function(cql_list, outputFormat = "csv", maxFeatures = NULL, columns = NULL) {
+create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:measurement_view", maxFeatures = 50, columns = NULL) {
 
   require(httr)
 
@@ -25,15 +25,15 @@ create_url <- function(cql_list, outputFormat = "csv", maxFeatures = NULL, colum
   if(is.null(cql_list)) cql_filter = NULL else cql_filter = paste0("(",paste(names(cql_list),paste0("'", cql_list, "'"),sep="=",collapse=" and " ),")")
 
   request <- structure(
-    list(scheme = "http",
-         hostname = "al-276.xtr.deltares.nl:8080",
+    list(scheme = "https",
+         hostname = "nwdm.avi.directory.intra",
          port = NULL,
          path = "geoserver/NWDM/ows",
          query = list(
            service = "WFS",
            version = "1.0.0",
            request = "GetFeature",
-           typeName = "NWDM:measurement_view",
+           typeName = typeName,
            cql_filter = cql_filter,
            outputFormat = outputFormat,
            maxFeatures = maxFeatures,
@@ -46,6 +46,13 @@ create_url <- function(cql_list, outputFormat = "csv", maxFeatures = NULL, colum
     ),
     class = "url")
 
+  if(!is.null(maxFeatures)) 
+  {print(cat("warning: maxFeatures =", 
+             maxFeatures, 
+             ". Only the first", maxFeatures, "lines will be read using this url.", 
+               "Change to maxFeatures = NULL if you want all data." ))
+    }
   url <- httr::build_url(request)
+  
 }
 
