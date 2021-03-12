@@ -1,0 +1,19 @@
+---
+title: "EMODnet chemistry eutrophication harmonized dataset"
+output: html_notebook
+---
+
+
+
+```{r setup, include=F}
+library(tidyverse)
+library(oce)
+datadir <- "c:\\GIS_DATA\\EMODnetChemistry"
+```
+
+
+
+```{r}
+df <- read.ctd.odv(file.path(datadir, "North_Sea_eutrophication_and_acidity_aggregated_v2018_2.txt"))
+```
+
