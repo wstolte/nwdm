@@ -41,8 +41,8 @@ create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:m
          ),
          params = NULL,
          fragment = NULL,
-         username = "nwdm",
-         password = "tvtas"
+         username = rstudioapi::askForPassword("database_userid"),
+         password = rstudioapi::askForPassword("database_password")
     ),
     class = "url")
 
