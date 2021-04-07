@@ -26,7 +26,7 @@ create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:m
 
   request <- structure(
     list(scheme = "https",
-         hostname = "nwdm.avi.directory.intra",
+         hostname = "nwdm.openearth.eu",
          port = NULL,
          path = "geoserver/NWDM/ows",
          query = list(
@@ -41,8 +41,8 @@ create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:m
          ),
          params = NULL,
          fragment = NULL,
-         username = NULL,
-         password = NULL
+         username = "nwdm",
+         password = "tvtas"
     ),
     class = "url")
 
@@ -53,6 +53,5 @@ create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:m
                "Change to maxFeatures = NULL if you want all data." ))
     }
   url <- httr::build_url(request)
-  
 }
 
