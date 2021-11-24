@@ -16,7 +16,7 @@
 #' url = create_url(cql_list = cql_list)
 #' read_csv(url)
 #'
-create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:measurement_view", maxFeatures = 50, columns = NULL) {
+create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:measurement_view", maxFeatures = 50, columns = NULL, username = username, password = password) {
 
   require(httr)
 
@@ -41,8 +41,8 @@ create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:m
          ),
          params = NULL,
          fragment = NULL,
-         username = rstudioapi::askForPassword("database_userid"),
-         password = rstudioapi::askForPassword("database_password")
+         username = username,
+         password = password
     ),
     class = "url")
 
