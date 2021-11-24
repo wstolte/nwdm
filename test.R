@@ -2,6 +2,7 @@
 source("r/wfsBuild.R")
 require(tidyverse)
 require(sf)
+require(leaflet) 
 
 # Get all locations
 
@@ -9,7 +10,8 @@ typeName = "NWDM:location"
 url = create_url(cql_list = NULL, typeName = typeName, maxFeatures = NULL, outputFormat = "application/json")
 locations <- st_read(url)
 # Visualize
-locations  %>% st_difference() %>%
+locations  %>% sample_n(1000) %>%
+  st_difference() %>%
   st_transform(4326) %>%
   leaflet() %>%
   leaflet::addTiles() %>% 
@@ -19,12 +21,12 @@ locations  %>% st_difference() %>%
 typeName = "NWDM:p35location"
 url = create_url(cql_list = NULL, typeName = typeName, maxFeatures = NULL, outputFormat = "application/json")
 p35locations <- st_read(url)
-# p35locations %>% st_drop_geometry() %>% group_by(p35code, p35preflabel) %>% summarize(n = n()) %>% View()
+p35locations %>% st_drop_geometry() %>% group_by(p35code, p35preflabel) %>% summarize(n = n()) %>% View()
 # p35locations %>% st_drop_geometry() %>% group_by(p35code, p35preflabel, data_holder) %>% summarize(aantalStations = n()) %>% 
 #   write_csv2(file.path("data", paste(lubridate::today(), "p35locations.csv", sep = "_")))
 
 p35locations  %>% 
-  filter(grepl("silic", x = p35preflabel)) %>%
+  filter(grepl("nitra", x = p35preflabel)) %>%
   st_difference() %>%
   st_transform(4326) %>%
   leaflet() %>%
@@ -42,8 +44,8 @@ l = list(
 # https://stackoverflow.com/questions/24059773/correct-way-to-pass-multiple-values-for-same-parameter-name-in-get-request
 
 l = list(
-  p35preflabel = "Water body nitrate"#,
-  # location_code = "DOOVBWT"
+  p35preflabel = "Water body nitrate",
+  location_code = "DOOVBWT"
 )
 
 columns = c("location_code", 
@@ -59,6 +61,7 @@ columns = c("location_code",
 
 url = create_url(cql_list = l, typeName = typeName, maxFeatures = NULL, outputFormat = "application/json")
 myData <- st_read(url)
+
 
 st_crs(myData)
 

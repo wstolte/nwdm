@@ -19,7 +19,6 @@ require(leaflet)
 ```
 
 
-
 # Workflow description
 
 ## Data in
