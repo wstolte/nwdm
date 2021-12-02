@@ -25,6 +25,16 @@ require(leaflet)
 
 Data from different sources are retrieved, harmonized and stored locally in a PostGreSQL/PostGIS database. This is done by scripting, so that it is easy to update. Data are then made available via a Geoserver for easy retrieval by users. For use in validation scripts, the data can be queried and downloaded in a ready-to-use form via scripting in Matlab, Python or R. This document describes this process. 
 
+### Background information on data
+
+The database uses parameter codes that were standardized by BODC (Britisch Oceanographic Data Center). Due to historical reasons there are two different parameter codes that the user needs to be aware of: P01 and P35. P01 parameter codes are very descriptive and very extensive and they are harmonized (to a certain extent) in the P35 parameter codes. Using the SeaDataNet website, one can search for the parameter codes available in both P01 and P35. 
+
+PO1: https://vocab.seadatanet.org/v_bodc_vocab_v2/search.asp?lib=P01
+
+P35: https://vocab.seadatanet.org/v_bodc_vocab_v2/search.asp?lib=P35
+
+Within the database P01 parameter codes can be accessed via the column "parameter_code", while P35 parameter codes are summarized in the column "p35code". 
+
 ## Data out
 
 
