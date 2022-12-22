@@ -51,6 +51,16 @@ All data are harmonized to BODC vocabulary terms.
 
 *Link to BODC vocabs*
 
+### Background information on data
+
+The database uses parameter codes that were standardized by BODC (Britisch Oceanographic Data Center). Due to historical reasons there are two different parameter codes that the user needs to be aware of: P01 and P35. P01 parameter codes are very descriptive and very extensive and they are harmonized (to a certain extent) in the P35 parameter codes. Using the SeaDataNet website, one can search for the parameter codes available in both P01 and P35. 
+
+PO1: https://vocab.seadatanet.org/v_bodc_vocab_v2/search.asp?lib=P01
+
+P35: https://vocab.seadatanet.org/v_bodc_vocab_v2/search.asp?lib=P35
+
+Within the database P01 parameter codes can be accessed via the column "parameter_code", while P35 parameter codes are summarized in the column "p35code". 
+
 ## Data out
 
 
