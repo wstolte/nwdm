@@ -32,13 +32,13 @@ Data from different sources are retrieved, harmonized and stored locally in a Po
 
 NWDM includes North Sea observation data intended for model validation. 
 
-```{r}
+```{r }
 typeName = "NWDM:data_owner"
 url = create_url(cql_list = NULL, typeName = typeName, 
                  maxFeatures = NULL, outputFormat = "application/json",
                  username = nwdm$username, password = nwdm$password)
 
-st_read(url) %>% st_drop_geometry() %>%
+st_read(url, quiet = T) %>% st_drop_geometry() %>%
   select(id) %>% mutate(`data owner` = gsub("data_owner.", "", id)) %>% 
   select(-id) %>%
   knitr::kable(caption = "Owners of data sources included in NWDM")
@@ -91,7 +91,7 @@ url = create_url(cql_list = NULL, typeName = typeName,
                  maxFeatures = NULL, outputFormat = "application/json",
                  username = nwdm$username, password = nwdm$password)
 
-locations <- st_read(url)
+locations <- st_read(url, quiet = T)
 
 locations %>%
   sample_n(1000) %>%
@@ -115,7 +115,7 @@ url = create_url(cql_list = NULL, typeName = typeName,
                  username = nwdm$username, password = nwdm$password
                  )
 
-parameters <- st_read(url)
+parameters <- st_read(url, quiet = T)
 
 typeName = "NWDM:p35location_overview_emodnet"
 url = create_url(cql_list = NULL, typeName = typeName, 
@@ -161,7 +161,7 @@ knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
 
 To query the database, an r package is available. Install the package with  devtools::install_github("wstolte/nwdm").
 
-```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of seasonal variation of nitrate concentration at location DOOVBWT. "}
+```{r installNWDM}
 
 require(lubridate)
 if(!require(nwdm)) {
@@ -169,6 +169,10 @@ if(!require(nwdm)) {
   devtools::install_github("wstolte/nwdm", force = T)
   require(nwdm)
   } else require(nwdm)
+
+```
+
+```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of seasonal variation of nitrate concentration at location DOOVBWT. "}
 
 cql_list = list(
   p35preflabel = "Water body nitrate"
@@ -192,7 +196,7 @@ url = create_url(cql_list = cql_list,
                  username = nwdm$username, 
                  password = nwdm$password)
 
-myData <- st_read(url)
+myData <- st_read(url, quiet = T)
 
 class(myData$median_value)
 
@@ -208,11 +212,6 @@ myData %>%
   addPolygons(fillColor = ~pal(median_value), stroke = F, color = ~pal(median_value)) %>%
   leaflet::addLegend(pal = pal, values = myData$median_value[myData$median_value < 1])
 
-
-# myData2 <- myData %>% head(10) %>%
-#   sf::st_simplify()
-#   st_collection_extract(type = "POLYGON") %>%
-#   st_centroid()
 ```
 
 
