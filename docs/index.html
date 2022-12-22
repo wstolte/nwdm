@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Documentation North Sea Wadden Sea validation database at Deltares</title>
-  <meta name="description" content="Documentation North Sea Wadden Sea validation database at Deltares" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <title>North Sea and Wadden Sea model validation database at Deltares</title>
+  <meta name="description" content="North Sea and Wadden Sea model validation database at Deltares" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Documentation North Sea Wadden Sea validation database at Deltares" />
+  <meta property="og:title" content="North Sea and Wadden Sea model validation database at Deltares" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Documentation North Sea Wadden Sea validation database at Deltares" />
+  <meta name="twitter:title" content="North Sea and Wadden Sea model validation database at Deltares" />
   
   
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Willem Stolte" />
 
 
-<meta name="date" content="2020-09-23" />
+<meta name="date" content="2021-02-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +33,7 @@
   
 
 <link rel="next" href="workflow-description.html"/>
+<script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,8 +51,9 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -62,18 +64,17 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -93,7 +94,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -139,14 +140,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Background</a></li>
-<li class="chapter" data-level="2" data-path="workflow-description.html"><a href="workflow-description.html"><i class="fa fa-check"></i><b>2</b> Workflow description</a><ul>
+<li class="chapter" data-level="2" data-path="workflow-description.html"><a href="workflow-description.html"><i class="fa fa-check"></i><b>2</b> Workflow description</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="workflow-description.html"><a href="workflow-description.html#data-in"><i class="fa fa-check"></i><b>2.1</b> Data in</a></li>
 <li class="chapter" data-level="2.2" data-path="workflow-description.html"><a href="workflow-description.html#data-out"><i class="fa fa-check"></i><b>2.2</b> Data out</a></li>
 <li class="chapter" data-level="2.3" data-path="workflow-description.html"><a href="workflow-description.html#locations"><i class="fa fa-check"></i><b>2.3</b> Locations</a></li>
 <li class="chapter" data-level="2.4" data-path="workflow-description.html"><a href="workflow-description.html#minimal-metadata-combination-of-locations-and-parameters"><i class="fa fa-check"></i><b>2.4</b> Minimal metadata: Combination of locations and parameters</a></li>
 <li class="chapter" data-level="2.5" data-path="workflow-description.html"><a href="workflow-description.html#observations"><i class="fa fa-check"></i><b>2.5</b> Observations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="building-a-query.html"><a href="building-a-query.html"><i class="fa fa-check"></i><b>3</b> Building a query</a><ul>
+<li class="chapter" data-level="3" data-path="building-a-query.html"><a href="building-a-query.html"><i class="fa fa-check"></i><b>3</b> Building a query</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="building-a-query.html"><a href="building-a-query.html#structure-of-a-wfs-request"><i class="fa fa-check"></i><b>3.1</b> Structure of a wfs request</a></li>
 <li class="chapter" data-level="3.2" data-path="building-a-query.html"><a href="building-a-query.html#select-parameters-and-locations"><i class="fa fa-check"></i><b>3.2</b> Select parameters and locations</a></li>
 </ul></li>
@@ -161,7 +164,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Documentation North Sea Wadden Sea validation database at Deltares</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">North Sea and Wadden Sea model validation database at Deltares</a>
           </h1>
         </div>
 
@@ -170,11 +173,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Documentation North Sea Wadden Sea validation database at Deltares</h1>
+<h1 class="title">North Sea and Wadden Sea model validation database at Deltares</h1>
 <p class="author"><em>Willem Stolte</em></p>
-<p class="date"><em>2020-09-23</em></p>
+<p class="date"><em>2021-02-11</em></p>
 </div>
-<div id="background" class="section level1">
+<div id="background" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Background</h1>
 <p>Several projects have a need for model validation data for the (Greater) North Sea. Current modeling efforts comprise hydrodynamics, sediment, water quality and ecological modeling. Validation data therefore comprise a large number of data from different origin, and different standards. The objective of this memo is to propose and agree on a common data format for validation data for North Sea models: both hydrodynamics, water quality and ecology.</p>
 

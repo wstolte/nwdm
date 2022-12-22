@@ -16,7 +16,13 @@
 #' url = create_url(cql_list = cql_list)
 #' read_csv(url)
 #'
-create_url <- function(cql_list = NULL, outputFormat = "csv", typeName = "NWDM:measurement_view", maxFeatures = 50, columns = NULL, username = username, password = password) {
+create_url <- function(cql_list = NULL, 
+                       outputFormat = "csv", 
+                       typeName = "NWDM:measurement_view", 
+                       maxFeatures = 50, 
+                       columns = NULL, 
+                       username = username, 
+                       password = password) {
 
   require(httr)
 

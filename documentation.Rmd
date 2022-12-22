@@ -1,6 +1,8 @@
 ---
 title: "North Sea and Wadden Sea model validation database at Deltares"
-
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
@@ -16,14 +18,38 @@ knitr::opts_chunk$set(
 require(tidyverse)
 require(sf)
 require(leaflet)
+require(scales)
+source("r/wfsBuild.R")
+source("r/credential.R")
 ```
 
 
 # Workflow description
 
+Data from different sources are retrieved, harmonized and stored locally in a PostGreSQL/PostGIS database. This is done by scripting, so that it is easy to update. Data are then made available via a Geoserver for easy retrieval by users. For use in validation scripts, the data can be queried and downloaded in a ready-to-use form via scripting in Matlab, Python or R. This document describes this process. 
+
 ## Data in
 
-Data from different sources are retrieved, harmonized and stored locally in a PostGreSQL/PostGIS database. This is done by scripting, so that it is easy to update. Data are then made available via a Geoserver for easy retrieval by users. For use in validation scripts, the data can be queried and downloaded in a ready-to-use form via scripting in Matlab, Python or R. This document describes this process. 
+NWDM includes North Sea observation data intended for model validation. 
+
+```{r}
+typeName = "NWDM:data_owner"
+url = create_url(cql_list = NULL, typeName = typeName, 
+                 maxFeatures = NULL, outputFormat = "application/json",
+                 username = nwdm$username, password = nwdm$password)
+
+st_read(url) %>% st_drop_geometry() %>%
+  select(id) %>% mutate(`data owner` = gsub("data_owner.", "", id)) %>% 
+  select(-id) %>%
+  knitr::kable(caption = "Owners of data sources included in NWDM")
+```
+
+
+## Harmonization of data sources
+
+All data are harmonized to BODC vocabulary terms. 
+
+*Link to BODC vocabs*
 
 ## Data out
 
@@ -32,67 +58,80 @@ The Geoserver provides a Web Feature Service (WFS). The service is called by a U
 
 Geoserver can deliver different formats, e.g. csv text. This is shown in the next examples. Calling the URL starts the download of this csv file. The file can be downloaded to your local machine, or read directly into an object in your favourite scripting language
 
-Currently, three tables are available in the Geoserver:
+Currently, the following tables are available in the Geoserver:
 
-1. Locations
-2. Locations and parameters 
-3. Observations - all observations (1.4 million). It is unwise to download all data in the observations table at once. The first 50 records can be downloaded with
-http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:measurement_view&outputFormat=csv&maxFeatures=50
+
+```{r databaseOverview, fig.cap="Overview of all data sources, and Geoserver WFS layers (bold)." }
+knitr::include_graphics("c:/repos_checkouts/Wozep/NWDM/doc/nwdm layers.svg")
+```
 
 
 
 ## Locations
 
-All unique locations in the database. The table can be downloaded using the url: http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv
 
-Below is a map with all locations currently in the database. Data is read into an r dataframe using read_csv from the readr (tidyverse) package, converted to a spatial object, transformed to a suitable coordinate reference system for interactive plotting, and plotted using the leaflet library. 
+Below is a map with all locations (excluding EMODnet and Ferrybox data) currently in the database. Data is read into an r dataframe using read_csv from the readr (tidyverse) package, converted to a spatial object, transformed to a suitable coordinate reference system for interactive plotting, and plotted using the leaflet library. 
 
 
-```{r}
-locs <- readr::read_csv("http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv") %>% 
-  sf::st_as_sf(coords = c("x","y"), crs = 4326)                         #, crs = 25831) %>%  # oude versie
-  # sf::st_transform(4326)
+```{r, fig.cap="Random sample of 1000 locations in the NWDM database."}
 
-leaflet::leaflet(locs) %>%
+typeName = "NWDM:location"
+
+url = create_url(cql_list = NULL, typeName = typeName, 
+                 maxFeatures = NULL, outputFormat = "application/json",
+                 username = nwdm$username, password = nwdm$password)
+
+locations <- st_read(url)
+
+locations %>%
+  sample_n(1000) %>%
+  leaflet::leaflet() %>%
   addTiles() %>%
-  addCircleMarkers(label = ~location_code)
+  addCircleMarkers(label = ~location_code, radius = 1)
+
 ```
 
 
-## Minimal metadata: Combination of locations and parameters
+## Metadata: Combination of locations and parameters
 
-All unique combinations of location and parameters. The table can be downloaded completeley using the url:  http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv
+All unique combinations of location and parameters. 
 
-The following parameters are currently loaded in the database:
 
-```{r}
-parameters <- readr::read_csv("http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:p35location&outputFormat=csv") %>% distinct(p35code, p35preflabel)
-knitr::kable(parameters)
+```{r mapP35locations, eval=F, fig.width=16, fig.height=16, fig.cap="Overview of grouped locations per P35 parameter."}
+
+typeName = "NWDM:measurement_p35_all_grid"
+url = create_url(cql_list = NULL, typeName = typeName, 
+                 outputFormat = "application/json", maxFeatures = NULL,
+                 username = nwdm$username, password = nwdm$password
+                 )
+
+parameters <- st_read(url)
+
+typeName = "NWDM:p35location_overview_emodnet"
+url = create_url(cql_list = NULL, typeName = typeName, 
+                 outputFormat = "application/json", maxFeatures = NULL,
+                 username = nwdm$username, password = nwdm$password)
+
+parameters_emodnet <- st_read(url) %>%
+  rename(p35preflabel = label)
+
+parameters %>% bind_rows(parameters_emodnet) %>%
+  ggplot() +
+  geom_sf() +
+  facet_wrap(~ p35preflabel)
+
+# knitr::kable(head(parameters, 10))
 ```
 
 
 ## Observations
 
-All observations. This table should not be downloaded completely. It is big and will grow bigger over time, and it is unlikely that you will need the complete table. The table can be easily subsetted by a so-called CQL-query in the wfs request (url). This is described in the next part.
+
+This table should not be downloaded completely. It is big and will grow bigger over time, and it is unlikely that you will need the complete table. The table can be easily subsetted by a so-called CQL-query in the wfs request (url). This is described in the next part.
 
 
 # Building a query
 
-## Structure of a wfs request
-
-The wfs request for the location table looks like this:
-
-```{r}
-structure <- httr::parse_url("http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM:location&outputFormat=csv")
-
-knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
-```
-
-The interesting part of the wfs request is the query. In the above example, the query contains information on the service and version (WFS 1.0.0), request (GetFeature), and the table or "typeName" (refers to database schema "NWDM", and table "location")
-
-```{r requestTable, fig.cap="structure of the query part of the WFS request."}
-knitr::kable(paste0(paste(names(structure$query),paste0(structure$query),sep="=")))
-```
 
 In the query part, we can add an element called [CQL-query](https://docs.geoserver.org/stable/en/user/tutorials/cql/cql_tutorial.html). 
 
@@ -100,9 +139,8 @@ In the query part, we can add an element called [CQL-query](https://docs.geoserv
 
 Below is an example where only data are requested that contain data on "water body nitrate" at locations "DOOVBWT" (this is a station in the Wadden Sea)
 
-
 ```{r}
-url = "http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM%3Ameasurement_view&cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&outputFormat=csv"
+url = "http://nwdm.openearth.eu/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=NWDM%3Ameasurement_view&cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&outputFormat=csv"
 structure <- httr::parse_url(url)
 
 knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
@@ -113,30 +151,58 @@ knitr::kable(paste0(paste(names(structure),paste0(structure),sep="=")))
 
 To query the database, an r package is available. Install the package with  devtools::install_github("wstolte/nwdm").
 
-```{r example1, fig.height=3, fig.cap="Example of seasonal variation of nitrate concentration at location DOOVBWT. "}
+```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of seasonal variation of nitrate concentration at location DOOVBWT. "}
 
 require(lubridate)
 if(!require(nwdm)) {
   print("Package nwdm will be installed") 
-  devtools::install_github("wstolte/nwdm")
+  devtools::install_github("wstolte/nwdm", force = T)
   require(nwdm)
   } else require(nwdm)
 
-cql_list = list(p35preflabel = "Water body nitrate",
-                location_code = "DOOVBWT"
+cql_list = list(
+  p35preflabel = "Water body nitrate"
 )
 
-columns = c("location_code", "date", "depth", "vertical_reference_code", "parameter_label", "value", "unit_preflabel", "quality_code")
+columns = c("location_code", 
+            "date", 
+            "depth", 
+            "vertical_reference_code", 
+            "parameter_label", 
+            "value", 
+            "unit_preflabel", 
+            "quality_code",
+            "geom"
+            )
 
-url = create_url(cql_list = cql_list)
+url = create_url(cql_list = cql_list, 
+                 typeName = "NWDM:measurement_p35_all_grid", 
+                 maxFeatures = NULL, 
+                 outputFormat = "application/json",
+                 username = nwdm$username, 
+                 password = nwdm$password)
 
-myData <- read_csv(url)
+myData <- st_read(url)
+
+class(myData$median_value)
+
+pal = leaflet::colorNumeric(palette = rainbow(16), domain = myData$median_value[myData$median_value < 1])
+
 myData %>% 
-  mutate(month = month(date), year = year(date)) %>%
-ggplot(aes(month, value)) +
-  geom_jitter(aes(color = year), width = 0.2)
+  # head(10000) %>%
+  mutate(season = ifelse(month %in% c(3,4,5,6,7,8,9), "summer", "winter")) %>%
+  filter(year > 2010) %>%
+  dplyr::filter(season == "winter") %>%
+  leaflet() %>% 
+  addTiles() %>%
+  addPolygons(fillColor = ~pal(median_value), stroke = F, color = ~pal(median_value)) %>%
+  leaflet::addLegend(pal = pal, values = myData$median_value[myData$median_value < 1])
 
 
+# myData2 <- myData %>% head(10) %>%
+#   sf::st_simplify()
+#   st_collection_extract(type = "POLYGON") %>%
+#   st_centroid()
 ```
 
 
@@ -145,9 +211,9 @@ ggplot(aes(month, value)) +
 Full documentation is found here: https://docs.geoserver.org/latest/en/user/services/wfs/reference.html
 
 The capabilities of the used geoserver schema can be requested by:
-http://nwdm.avi.directory.intra/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetCapabilities
+http://nwdm.openearth.eu/geoserver/NWDM/ows?service=WFS&version=1.0.0&request=GetCapabilities
 
 A description of the featuretypes (layers) can be requested by:
-http://nwdm.avi.directory.intra/geoserver/NWDM/wfs?request=DescribeFeatureType
+http://nwdm.openearth.eu/geoserver/NWDM/wfs?request=DescribeFeatureType
 
 
