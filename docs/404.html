@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Building a query | North Sea and Wadden Sea model validation database at Deltares</title>
-  <meta name="description" content="3 Building a query | North Sea and Wadden Sea model validation database at Deltares" />
+  <title>Page not found | North Sea and Wadden Sea model validation database at Deltares</title>
+  <meta name="description" content="Page not found | North Sea and Wadden Sea model validation database at Deltares" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Building a query | North Sea and Wadden Sea model validation database at Deltares" />
+  <meta property="og:title" content="Page not found | North Sea and Wadden Sea model validation database at Deltares" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Building a query | North Sea and Wadden Sea model validation database at Deltares" />
+  <meta name="twitter:title" content="Page not found | North Sea and Wadden Sea model validation database at Deltares" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="workflow-description.html"/>
-<link rel="next" href="package-nwdm.html"/>
+
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -176,64 +176,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="building-a-query" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">3</span> Building a query<a href="building-a-query.html#building-a-query" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In the query part, we can add an element called <a href="https://docs.geoserver.org/stable/en/user/tutorials/cql/cql_tutorial.html">CQL-query</a>.</p>
-<div id="select-parameters-and-locations" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Select parameters and locations<a href="building-a-query.html#select-parameters-and-locations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Below is an example where only data are requested that contain data on “water body nitrate” at locations “DOOVBWT” (this is a station in the Wadden Sea)</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="building-a-query.html#cb8-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">&quot;http://nwdm.openearth.eu/geoserver/NWDM/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=NWDM%3Ameasurement_view&amp;cql_filter=%28p35preflabel%3D%27Water%20body%20nitrate%27%20and%20location_code%3D%27DOOVBWT%27%29&amp;outputFormat=csv&quot;</span></span>
-<span id="cb8-2"><a href="building-a-query.html#cb8-2" aria-hidden="true" tabindex="-1"></a>structure <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">parse_url</span>(url)</span>
-<span id="cb8-3"><a href="building-a-query.html#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="building-a-query.html#cb8-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">paste0</span>(<span class="fu">paste</span>(<span class="fu">names</span>(structure),<span class="fu">paste0</span>(structure),<span class="at">sep=</span><span class="st">&quot;=&quot;</span>)))</span></code></pre></div>
-<table>
-<colgroup>
-<col width="100%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">scheme=http</td>
-</tr>
-<tr class="even">
-<td align="left">hostname=nwdm.openearth.eu</td>
-</tr>
-<tr class="odd">
-<td align="left">port=NULL</td>
-</tr>
-<tr class="even">
-<td align="left">path=geoserver/NWDM/ows</td>
-</tr>
-<tr class="odd">
-<td align="left">query=list(service = “WFS”, version = “1.0.0”, request = “GetFeature”, typeName = “NWDM:measurement_view”, cql_filter = “(p35preflabel=‘Water body nitrate’ and location_code=‘DOOVBWT’)”, outputFormat = “csv”)</td>
-</tr>
-<tr class="even">
-<td align="left">params=NULL</td>
-</tr>
-<tr class="odd">
-<td align="left">fragment=NULL</td>
-</tr>
-<tr class="even">
-<td align="left">username=NULL</td>
-</tr>
-<tr class="odd">
-<td align="left">password=NULL</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div id="page-not-found" class="section level1">
+<h1>Page not found</h1>
+<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
+<p>You may want to try searching to find the page's new location, or use
+the table of contents to find the page you are looking for.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="workflow-description.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="package-nwdm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

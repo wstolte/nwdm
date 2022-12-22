@@ -18,19 +18,23 @@
 #'
 create_url <- function(cql_list = NULL, 
                        outputFormat = "csv", 
-                       typeName = "NWDM:measurement_view", 
+                       typeName = NULL, 
                        maxFeatures = 50, 
                        columns = NULL, 
-                       username = username, 
-                       password = password) {
+                       bbox = NULL,
+                       username = NULL, 
+                       password = NULL) {
 
   require(httr)
 
   if(is.null(columns)) propertyName = NULL else propertyName = paste("NWDM", columns, sep = ":", collapse = ",")
 
-  if(is.null(cql_list)) cql_filter = NULL else cql_filter = paste0("(",paste(names(cql_list),paste0("'", cql_list, "'"),sep="=",collapse=" and " ),")")
-
-  request <- structure(
+  if(is.null(cql_list)) 
+    cql_f = NULL 
+  else 
+    cql_f = paste0("(",paste(names(cql_list),paste0("'", cql_list, "'"),sep="=",collapse=" and " ),")")
+  
+  r <- structure(
     list(scheme = "https",
          hostname = "nwdm.openearth.eu",
          port = NULL,
@@ -40,7 +44,8 @@ create_url <- function(cql_list = NULL,
            version = "1.0.0",
            request = "GetFeature",
            typeName = typeName,
-           cql_filter = cql_filter,
+           bbox = bbox,
+           cql_filter = cql_f,
            outputFormat = outputFormat,
            maxFeatures = maxFeatures,
            propertyName = propertyName
@@ -58,6 +63,6 @@ create_url <- function(cql_list = NULL,
              ". Only the first", maxFeatures, "lines will be read using this url.", 
                "Change to maxFeatures = NULL if you want all data." ))
     }
-  url <- httr::build_url(request)
+  url <- httr::build_url(r)
 }
 
