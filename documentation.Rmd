@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 	out.width = "100%"
 )
 require(tidyverse)
+require(lubridate)
 require(sf)
 require(leaflet)
 require(scales)
@@ -172,7 +173,7 @@ if(!require(nwdm)) {
 
 ```
 
-```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of seasonal variation of nitrate concentration at location DOOVBWT. "}
+```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of winter concentration of nitrate as a grid from layer measurement_p35_all_grid. "}
 
 cql_list = list(
   p35preflabel = "Water body nitrate"
@@ -190,7 +191,7 @@ columns = c("location_code",
             )
 
 url = create_url(cql_list = cql_list, 
-                 typeName = "NWDM:measurement_p35_all_grid", 
+                 typeName = "NWDM:measurement_p35_all_grid",
                  maxFeatures = NULL, 
                  outputFormat = "application/json",
                  username = nwdm$username, 
@@ -200,7 +201,7 @@ myData <- st_read(url, quiet = T)
 
 class(myData$median_value)
 
-pal = leaflet::colorNumeric(palette = rainbow(16), domain = myData$median_value[myData$median_value < 1])
+pal = leaflet::colorNumeric(palette = rainbow(16), domain = myData$median_value[myData$median_value < 10])
 
 myData %>% 
   # head(10000) %>%
@@ -210,9 +211,60 @@ myData %>%
   leaflet() %>% 
   addTiles() %>%
   addPolygons(fillColor = ~pal(median_value), stroke = F, color = ~pal(median_value)) %>%
-  leaflet::addLegend(pal = pal, values = myData$median_value[myData$median_value < 1])
+  leaflet::addLegend(pal = pal, values = myData$median_value[myData$median_value < 10])
 
 ```
+
+
+```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of nitrate winter concentrations in time over the whole North Sea. "}
+
+cql_list = list(
+  p35preflabel = "Water body nitrate"
+)
+
+columns = c("location_code", 
+            "date", 
+            "depth", 
+            "vertical_reference_code", 
+            "parameter_label", 
+            "value", 
+            "unit_preflabel", 
+            "quality_code",
+            "geom"
+            )
+
+url = create_url(cql_list = cql_list, 
+                 typeName = "NWDM:measurement_p01_all",
+                 maxFeatures = NULL, 
+                 outputFormat = "application/json",
+                 username = nwdm$username, 
+                 password = nwdm$password)
+
+myData <- st_read(url, quiet = T)
+
+myData %>% 
+  # head(2000) %>%
+  mutate(year = year(date), month = month(date)) %>%
+  mutate(season = ifelse(month %in% c(3,4,5,6,7,8,9), "summer", "winter")) %>%
+  filter(year > 2010, depth < 10) %>%
+  # dplyr::filter(season == "winter") %>%
+  ggplot(aes(month, value)) +
+  geom_boxplot(aes(fill = year, group = month)) +
+  scale_x_continuous(breaks = pretty_breaks()) +
+  scale_y_log10()
+
+myData %>% 
+  mutate(year = year(date), month = month(date)) %>%
+  mutate(season = ifelse(month %in% c(3,4,5,6,7,8,9), "summer", "winter")) %>%
+  filter(year > 2010, depth < 10) %>%
+  dplyr::filter(season == "winter") %>%
+  ggplot(aes(color = value)) +
+  geom_sf() +
+  scale_color_viridis_c(direction = -1)
+  
+
+```
+
 
 
 # More on WFS
