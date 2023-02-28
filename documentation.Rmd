@@ -84,7 +84,7 @@ knitr::include_graphics("c:/repos_checkouts/Wozep/NWDM/doc/nwdm layers.svg")
 Below is a map with all locations (excluding EMODnet and Ferrybox data) currently in the database. Data is read into an r dataframe using read_csv from the readr (tidyverse) package, converted to a spatial object, transformed to a suitable coordinate reference system for interactive plotting, and plotted using the leaflet library. 
 
 
-```{r, fig.cap="Random sample of 1000 locations in the NWDM database."}
+```{r, fig.cap="Locations with more than 500 entries in the NWDM database."}
 
 typeName = "NWDM:location"
 
@@ -95,7 +95,8 @@ url = create_url(cql_list = NULL, typeName = typeName,
 locations <- st_read(url, quiet = T)
 
 locations %>%
-  sample_n(1000) %>%
+  arrange(-number_of_observations) %>%
+  filter(number_of_observations > 500) %>%
   leaflet::leaflet() %>%
   addTiles() %>%
   addCircleMarkers(label = ~location_code, radius = 1)
@@ -173,7 +174,7 @@ if(!require(nwdm)) {
 
 ```
 
-```{r example1, fig.height=4, fig.width = 8, fig.cap="Example of winter concentration of nitrate as a grid from layer measurement_p35_all_grid. "}
+```{r example2, fig.height=4, fig.width = 8, fig.cap="Example of winter concentration of nitrate as a grid from layer measurement_p35_all_grid. "}
 
 cql_list = list(
   p35preflabel = "Water body nitrate"

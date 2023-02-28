@@ -1,7 +1,7 @@
 tab:unnamed-chunk-2
 fig:databaseOverview
-fig:unnamed-chunk-3
-fig:example1
+fig:example1-1
+fig:example1-2
 background
 workflow-description
 data-in
