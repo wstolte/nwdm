@@ -73,7 +73,7 @@ Currently, the following tables are available in the Geoserver:
 
 
 ```{r databaseOverview, fig.cap="Overview of all data sources, and Geoserver WFS layers (bold)." }
-knitr::include_graphics("c:/repos_checkouts/Wozep/NWDM/doc/nwdm layers.svg")
+knitr::include_graphics("images/nwdm layers.svg")
 ```
 
 
@@ -88,9 +88,12 @@ Below is a map with all locations (excluding EMODnet and Ferrybox data) currentl
 
 typeName = "NWDM:location"
 
-url = create_url(cql_list = NULL, typeName = typeName, 
-                 maxFeatures = NULL, outputFormat = "application/json",
-                 username = nwdm$username, password = nwdm$password)
+url = create_url(cql_list = NULL, 
+                 typeName = typeName, 
+                 maxFeatures = NULL, 
+                 outputFormat = "application/json",
+                 username = nwdm$username, 
+                 password = nwdm$password)
 
 locations <- st_read(url, quiet = T)
 
@@ -111,10 +114,13 @@ All unique combinations of location and parameters.
 
 ```{r mapP35locations, eval=F, fig.width=16, fig.height=16, fig.cap="Overview of grouped locations per P35 parameter."}
 
-typeName = "NWDM:measurement_p35_all_grid"
-url = create_url(cql_list = NULL, typeName = typeName, 
-                 outputFormat = "application/json", maxFeatures = NULL,
-                 username = nwdm$username, password = nwdm$password
+typeName = "NWDM:measurement_p35_all_modelgrid"
+url = create_url(cql_list = NULL, 
+                 typeName = typeName, 
+                 outputFormat = "application/json", 
+                 maxFeatures = NULL,
+                 username = nwdm$username, 
+                 password = nwdm$password
                  )
 
 parameters <- st_read(url, quiet = T)
